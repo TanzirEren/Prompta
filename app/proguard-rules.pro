@@ -1,0 +1,5 @@
+-keep class com.prompta.tg.model.** { *; }
+-keepattributes Signature
+-keepattributes *Annotation*
+-dontwarn okhttp3.**
+-dontwarn retrofit2.**
