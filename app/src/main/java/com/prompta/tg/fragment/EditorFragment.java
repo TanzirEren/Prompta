@@ -312,6 +312,8 @@ public class EditorFragment extends Fragment {
         // Inline
         fmtBold.setOnClickListener(v        -> formatHelper.bold());
         fmtItalic.setOnClickListener(v      -> formatHelper.italic());
+        // Strikethrough visual on the button (paintFlags must be set in Java, not XML)
+        fmtStrike.setPaintFlags(fmtStrike.getPaintFlags() | android.graphics.Paint.STRIKE_THRU_TEXT_FLAG);
         fmtStrike.setOnClickListener(v      -> formatHelper.strikethrough());
         fmtHighlight.setOnClickListener(v   -> formatHelper.highlight());
         fmtCodeInline.setOnClickListener(v  -> formatHelper.inlineCode());

@@ -153,11 +153,10 @@
                     android:text="I"
                     android:textStyle="italic" />
 
-                <!-- Strikethrough -->
+                <!-- Strikethrough (paintFlags set in Java: STRIKE_THRU_TEXT_FLAG) -->
                 <TextView android:id="@+id/fmt_strike"
                     style="@style/FormatBtn"
-                    android:text="S"
-                    android:paintFlags="8" />
+                    android:text="S" />
 
                 <View style="@style/ToolbarDivider"/>
 

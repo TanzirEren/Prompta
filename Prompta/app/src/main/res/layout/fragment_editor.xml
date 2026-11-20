@@ -1,0 +1,512 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bg_primary"
+    android:fitsSystemWindows="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <!-- ── Top Bar ── -->
+        <LinearLayout
+            android:id="@+id/editor_top_bar"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:paddingHorizontal="12dp">
+
+            <!-- Back -->
+            <ImageView
+                android:id="@+id/btn_back"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:src="@drawable/ic_arrow_back"
+                android:padding="8dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:background="?android:attr/selectableItemBackgroundBorderless"
+                android:contentDescription="Back" />
+
+            <!-- Title input -->
+            <EditText
+                android:id="@+id/et_title"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@null"
+                android:hint="Prompt title…"
+                android:textSize="17sp"
+                android:textColor="@color/obsidian"
+                android:textColorHint="@color/obsidian_muted"
+                android:fontFamily="sans-serif-medium"
+                android:paddingHorizontal="10dp"
+                android:imeOptions="actionNext"
+                android:inputType="text"
+                android:singleLine="true" />
+
+            <!-- Auto-save indicator -->
+            <TextView
+                android:id="@+id/tv_autosave"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=""
+                android:textSize="11sp"
+                android:textColor="@color/obsidian_muted"
+                android:alpha="0"
+                android:paddingEnd="4dp" />
+
+            <!-- Preview toggle -->
+            <ImageView
+                android:id="@+id/btn_preview"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:src="@drawable/ic_preview"
+                android:padding="8dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:background="?android:attr/selectableItemBackgroundBorderless"
+                android:contentDescription="Preview" />
+
+            <!-- More options -->
+            <ImageView
+                android:id="@+id/btn_more"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:src="@drawable/ic_more"
+                android:padding="8dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:background="?android:attr/selectableItemBackgroundBorderless"
+                android:contentDescription="More" />
+        </LinearLayout>
+
+        <!-- ── Divider ── -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:background="@color/divider" />
+
+        <!-- ── Format Toolbar (scrollable) ── -->
+        <HorizontalScrollView
+            android:id="@+id/format_toolbar_scroll"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:scrollbars="none"
+            android:background="@color/bg_primary"
+            android:paddingVertical="6dp">
+
+            <LinearLayout
+                android:id="@+id/format_toolbar"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:paddingHorizontal="10dp">
+
+                <!-- H1 -->
+                <TextView android:id="@+id/fmt_h1"
+                    style="@style/FormatBtn"
+                    android:text="H1" />
+
+                <!-- H2 -->
+                <TextView android:id="@+id/fmt_h2"
+                    style="@style/FormatBtn"
+                    android:text="H2" />
+
+                <!-- H3 -->
+                <TextView android:id="@+id/fmt_h3"
+                    style="@style/FormatBtn"
+                    android:text="H3" />
+
+                <!-- H4 -->
+                <TextView android:id="@+id/fmt_h4"
+                    style="@style/FormatBtn"
+                    android:text="H4" />
+
+                <!-- H5 -->
+                <TextView android:id="@+id/fmt_h5"
+                    style="@style/FormatBtn"
+                    android:text="H5" />
+
+                <!-- H6 -->
+                <TextView android:id="@+id/fmt_h6"
+                    style="@style/FormatBtn"
+                    android:text="H6" />
+
+                <View style="@style/ToolbarDivider"/>
+
+                <!-- Bold -->
+                <TextView android:id="@+id/fmt_bold"
+                    style="@style/FormatBtn"
+                    android:text="B"
+                    android:textStyle="bold" />
+
+                <!-- Italic -->
+                <TextView android:id="@+id/fmt_italic"
+                    style="@style/FormatBtn"
+                    android:text="I"
+                    android:textStyle="italic" />
+
+                <!-- Strikethrough (paintFlags set in Java: STRIKE_THRU_TEXT_FLAG) -->
+                <TextView android:id="@+id/fmt_strike"
+                    style="@style/FormatBtn"
+                    android:text="S" />
+
+                <View style="@style/ToolbarDivider"/>
+
+                <!-- Highlight -->
+                <ImageView android:id="@+id/fmt_highlight"
+                    style="@style/FormatBtnImg"
+                    android:src="@drawable/ic_highlight" />
+
+                <!-- Link -->
+                <ImageView android:id="@+id/fmt_link"
+                    style="@style/FormatBtnImg"
+                    android:src="@drawable/ic_link" />
+
+                <!-- Image -->
+                <ImageView android:id="@+id/fmt_image"
+                    style="@style/FormatBtnImg"
+                    android:src="@drawable/ic_image" />
+
+                <View style="@style/ToolbarDivider"/>
+
+                <!-- Inline code -->
+                <TextView android:id="@+id/fmt_code_inline"
+                    style="@style/FormatBtn"
+                    android:text="`c`"
+                    android:fontFamily="monospace"
+                    android:textSize="12sp" />
+
+                <!-- Code block -->
+                <ImageView android:id="@+id/fmt_code_block"
+                    style="@style/FormatBtnImg"
+                    android:src="@drawable/ic_code_block" />
+
+                <View style="@style/ToolbarDivider"/>
+
+                <!-- Bullet list -->
+                <ImageView android:id="@+id/fmt_bullet"
+                    style="@style/FormatBtnImg"
+                    android:src="@drawable/ic_list_bullet" />
+
+                <!-- Numbered list -->
+                <ImageView android:id="@+id/fmt_numbered"
+                    style="@style/FormatBtnImg"
+                    android:src="@drawable/ic_list_numbered" />
+
+                <!-- Checklist -->
+                <ImageView android:id="@+id/fmt_checklist"
+                    style="@style/FormatBtnImg"
+                    android:src="@drawable/ic_checklist" />
+
+                <View style="@style/ToolbarDivider"/>
+
+                <!-- Quote -->
+                <ImageView android:id="@+id/fmt_quote"
+                    style="@style/FormatBtnImg"
+                    android:src="@drawable/ic_quote" />
+
+                <!-- Table -->
+                <ImageView android:id="@+id/fmt_table"
+                    style="@style/FormatBtnImg"
+                    android:src="@drawable/ic_table" />
+
+                <!-- Divider/HR -->
+                <ImageView android:id="@+id/fmt_hr"
+                    style="@style/FormatBtnImg"
+                    android:src="@drawable/ic_hr" />
+
+                <View style="@style/ToolbarDivider"/>
+
+                <!-- Line numbers toggle -->
+                <ImageView android:id="@+id/fmt_line_numbers"
+                    style="@style/FormatBtnImg"
+                    android:src="@drawable/ic_line_numbers" />
+
+                <!-- Undo -->
+                <ImageView android:id="@+id/fmt_undo"
+                    style="@style/FormatBtnImg"
+                    android:src="@drawable/ic_undo" />
+
+                <!-- Redo -->
+                <ImageView android:id="@+id/fmt_redo"
+                    style="@style/FormatBtnImg"
+                    android:src="@drawable/ic_redo" />
+
+            </LinearLayout>
+        </HorizontalScrollView>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:background="@color/divider" />
+
+        <!-- ── Editor / Preview FrameLayout ── -->
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1">
+
+            <!-- Markdown Edit area -->
+            <ScrollView
+                android:id="@+id/editor_scroll"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scrollbars="none">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <!-- Line numbers column (hidden by default) -->
+                    <LinearLayout
+                        android:id="@+id/line_number_panel"
+                        android:layout_width="36dp"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:visibility="gone"
+                        android:paddingTop="16dp"
+                        android:paddingStart="4dp">
+
+                        <!-- Generated dynamically by Java -->
+                    </LinearLayout>
+
+                    <!-- Main EditText -->
+                    <EditText
+                        android:id="@+id/et_content"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:background="@null"
+                        android:padding="16dp"
+                        android:textSize="15sp"
+                        android:textColor="@color/obsidian"
+                        android:hint="Start writing…"
+                        android:textColorHint="@color/obsidian_muted"
+                        android:gravity="top|start"
+                        android:inputType="textMultiLine|textCapSentences"
+                        android:imeOptions="flagNoEnterAction"
+                        android:scrollbars="none"
+                        android:lineSpacingMultiplier="1.5"
+                        android:fontFamily="sans-serif" />
+                </LinearLayout>
+            </ScrollView>
+
+            <!-- Markdown Preview (hidden by default) -->
+            <ScrollView
+                android:id="@+id/preview_scroll"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:visibility="gone"
+                android:scrollbars="none">
+
+                <TextView
+                    android:id="@+id/tv_preview"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="16dp"
+                    android:textSize="15sp"
+                    android:textColor="@color/obsidian"
+                    android:lineSpacingMultiplier="1.6" />
+            </ScrollView>
+
+        </FrameLayout>
+
+        <!-- ── Bottom Status Bar ── -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="32dp"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:paddingHorizontal="16dp"
+            android:background="@color/bg_primary">
+
+            <TextView
+                android:id="@+id/tv_word_count"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="0 words"
+                android:textSize="11sp"
+                android:textColor="@color/obsidian_muted" />
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_weight="1" />
+
+            <TextView
+                android:id="@+id/tv_read_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="~0 min read"
+                android:textSize="11sp"
+                android:textColor="@color/obsidian_muted" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <!-- ── Floating Context Toolbar (shown on text selection) ── -->
+    <androidx.cardview.widget.CardView
+        android:id="@+id/selection_toolbar"
+        android:layout_width="wrap_content"
+        android:layout_height="44dp"
+        android:layout_gravity="top|center_horizontal"
+        android:layout_marginTop="80dp"
+        android:visibility="gone"
+        android:elevation="12dp"
+        app:cardCornerRadius="22dp"
+        app:cardBackgroundColor="@color/obsidian"
+        app:cardElevation="8dp">
+
+        <HorizontalScrollView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:scrollbars="none">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:paddingHorizontal="6dp">
+
+                <ImageView android:id="@+id/sel_bold"
+                    style="@style/SelectionBtn"
+                    android:src="@drawable/ic_bold_white" />
+
+                <ImageView android:id="@+id/sel_italic"
+                    style="@style/SelectionBtn"
+                    android:src="@drawable/ic_italic_white" />
+
+                <ImageView android:id="@+id/sel_highlight"
+                    style="@style/SelectionBtn"
+                    android:src="@drawable/ic_highlight_white" />
+
+                <ImageView android:id="@+id/sel_link"
+                    style="@style/SelectionBtn"
+                    android:src="@drawable/ic_link_white" />
+
+                <ImageView android:id="@+id/sel_code"
+                    style="@style/SelectionBtn"
+                    android:src="@drawable/ic_code_white" />
+
+                <ImageView android:id="@+id/sel_code_block"
+                    style="@style/SelectionBtn"
+                    android:src="@drawable/ic_code_block_white" />
+
+                <ImageView android:id="@+id/sel_image"
+                    style="@style/SelectionBtn"
+                    android:src="@drawable/ic_image_white" />
+
+                <ImageView android:id="@+id/sel_h1"
+                    style="@style/SelectionBtn"
+                    android:src="@drawable/ic_h1_white" />
+
+                <ImageView android:id="@+id/sel_md"
+                    style="@style/SelectionBtn"
+                    android:src="@drawable/ic_markdown_white" />
+
+            </LinearLayout>
+        </HorizontalScrollView>
+    </androidx.cardview.widget.CardView>
+
+    <!-- ── Link Dialog overlay ── -->
+    <androidx.cardview.widget.CardView
+        android:id="@+id/link_dialog"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:layout_margin="16dp"
+        android:visibility="gone"
+        android:elevation="16dp"
+        app:cardCornerRadius="20dp"
+        app:cardBackgroundColor="@color/bg_card">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="20dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Insert Link"
+                android:textSize="16sp"
+                android:textColor="@color/obsidian"
+                android:fontFamily="sans-serif-medium"
+                android:layout_marginBottom="12dp" />
+
+            <EditText
+                android:id="@+id/et_link_text"
+                android:layout_width="match_parent"
+                android:layout_height="44dp"
+                android:background="@drawable/bg_search_bar"
+                android:hint="Link text"
+                android:textSize="14sp"
+                android:textColor="@color/obsidian"
+                android:textColorHint="@color/obsidian_muted"
+                android:paddingHorizontal="12dp"
+                android:layout_marginBottom="8dp" />
+
+            <EditText
+                android:id="@+id/et_link_url"
+                android:layout_width="match_parent"
+                android:layout_height="44dp"
+                android:background="@drawable/bg_search_bar"
+                android:hint="https://"
+                android:textSize="14sp"
+                android:textColor="@color/obsidian"
+                android:textColorHint="@color/obsidian_muted"
+                android:paddingHorizontal="12dp"
+                android:inputType="textUri"
+                android:layout_marginBottom="16dp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <FrameLayout
+                    android:id="@+id/btn_link_cancel"
+                    android:layout_width="0dp"
+                    android:layout_height="44dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/bg_search_bar"
+                    android:layout_marginEnd="8dp">
+                    <TextView android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:text="Cancel"
+                        android:textSize="14sp"
+                        android:textColor="@color/obsidian_muted" />
+                </FrameLayout>
+
+                <FrameLayout
+                    android:id="@+id/btn_link_insert"
+                    android:layout_width="0dp"
+                    android:layout_height="44dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/bg_fab">
+                    <TextView android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:text="Insert"
+                        android:textSize="14sp"
+                        android:textColor="@color/bg_primary"
+                        android:fontFamily="sans-serif-medium" />
+                </FrameLayout>
+            </LinearLayout>
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
