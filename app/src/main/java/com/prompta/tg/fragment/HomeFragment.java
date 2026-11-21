@@ -15,6 +15,8 @@ import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -63,6 +65,14 @@ public class HomeFragment extends Fragment {
         tvCancelSearch  = view.findViewById(R.id.btn_cancel_search);
 
         repository = new PromptRepository(requireContext());
+
+        // Apply status bar inset to top bar so it doesn't overlap status bar icons
+        View topBar = view.findViewById(R.id.top_bar);
+        ViewCompat.setOnApplyWindowInsetsListener(topBar, (v, insets) -> {
+            int statusBarHeight = insets.getInsets(WindowInsetsCompat.Type.statusBars()).top;
+            v.setPadding(v.getPaddingLeft(), statusBarHeight + 8, v.getPaddingRight(), v.getPaddingBottom());
+            return insets;
+        });
 
         setupRecyclerView();
         setupSearch();

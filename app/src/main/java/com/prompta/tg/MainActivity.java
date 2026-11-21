@@ -2,14 +2,15 @@ package com.prompta.tg;
 
 import android.os.Bundle;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
@@ -25,7 +26,7 @@ public class MainActivity extends AppCompatActivity {
     private ImageView icHome, icSettings;
     private TextView tvHome, tvSettings;
 
-    private static final int TAB_HOME = 0;
+    private static final int TAB_HOME     = 0;
     private static final int TAB_SETTINGS = 2;
     private int currentTab = TAB_HOME;
 
@@ -33,11 +34,9 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        // Edge-to-edge display
-        getWindow().setFlags(
-                WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
-                WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS
-        );
+        // Edge-to-edge: fragment content draws behind status bar & nav bar,
+        // but we manually apply insets to each zone.
+        WindowCompat.setDecorFitsSystemWindows(getWindow(), false);
 
         setContentView(R.layout.activity_main);
 
@@ -45,7 +44,6 @@ public class MainActivity extends AppCompatActivity {
         applyInsets();
         setupNavigation();
 
-        // Start with Home
         if (savedInstanceState == null) {
             loadFragment(new HomeFragment(), false);
         }
@@ -62,11 +60,21 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void applyInsets() {
+        // Bottom nav: add system navigation bar height as bottom padding
         View navCard = findViewById(R.id.nav_card);
-        ViewCompat.setOnApplyWindowInsetsListener(navCard, (v, insets) -> {
-            int bottom = insets.getInsets(WindowInsetsCompat.Type.systemBars()).bottom;
-            v.setPadding(0, 0, 0, bottom);
-            return insets;
+        ViewCompat.setOnApplyWindowInsetsListener(navCard, (v, windowInsets) -> {
+            Insets sys = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars());
+            // Add nav bar height to bottom padding so content sits above nav bar
+            v.setPadding(0, 0, 0, sys.bottom);
+            return WindowInsetsCompat.CONSUMED;
+        });
+
+        // Fragment container: dispatch insets to fragments
+        View fragmentContainer = findViewById(R.id.fragment_container);
+        ViewCompat.setOnApplyWindowInsetsListener(fragmentContainer, (v, windowInsets) -> {
+            // Let fragments handle their own insets (status bar top padding)
+            ViewCompat.dispatchApplyWindowInsets(v, windowInsets);
+            return WindowInsetsCompat.CONSUMED;
         });
     }
 
@@ -97,7 +105,6 @@ public class MainActivity extends AppCompatActivity {
     private void loadFragment(Fragment fragment, boolean addToBack, boolean isEditor) {
         FragmentTransaction tx = getSupportFragmentManager().beginTransaction();
         if (isEditor) {
-            // Editor: slide up in, slide down out
             tx.setCustomAnimations(
                     R.anim.slide_up,
                     R.anim.fade_scale_out,
@@ -147,7 +154,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void updateNavUI() {
-        // Reset
         icHome.setAlpha(currentTab == TAB_HOME ? 1f : 0.4f);
         tvHome.setAlpha(currentTab == TAB_HOME ? 1f : 0.4f);
         icSettings.setAlpha(currentTab == TAB_SETTINGS ? 1f : 0.4f);

@@ -9,7 +9,7 @@ import java.util.concurrent.TimeUnit;
 
 /**
  * TelegramClient — Retrofit singleton।
- * TelegramApi instance দেয়।
+ * reset() call করলে নতুন instance তৈরি হয়।
  */
 public class TelegramClient {
 
@@ -19,25 +19,34 @@ public class TelegramClient {
 
     public static TelegramApi get() {
         if (instance == null) {
-            HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
-            logging.setLevel(HttpLoggingInterceptor.Level.BODY);
-
-            OkHttpClient client = new OkHttpClient.Builder()
-                    .connectTimeout(15, TimeUnit.SECONDS)
-                    .readTimeout(15, TimeUnit.SECONDS)
-                    .writeTimeout(15, TimeUnit.SECONDS)
-                    .addInterceptor(logging)
-                    .build();
-
-            Retrofit retrofit = new Retrofit.Builder()
-                    .baseUrl(BASE_URL)
-                    .client(client)
-                    .addConverterFactory(GsonConverterFactory.create())
-                    .build();
-
-            instance = retrofit.create(TelegramApi.class);
+            instance = buildInstance();
         }
         return instance;
+    }
+
+    /** Token পরিবর্তন হলে singleton reset করুন */
+    public static void reset() {
+        instance = null;
+    }
+
+    private static TelegramApi buildInstance() {
+        HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
+        logging.setLevel(HttpLoggingInterceptor.Level.BODY);
+
+        OkHttpClient client = new OkHttpClient.Builder()
+                .connectTimeout(15, TimeUnit.SECONDS)
+                .readTimeout(15, TimeUnit.SECONDS)
+                .writeTimeout(15, TimeUnit.SECONDS)
+                .addInterceptor(logging)
+                .build();
+
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(BASE_URL)
+                .client(client)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        return retrofit.create(TelegramApi.class);
     }
 
     private TelegramClient() {}

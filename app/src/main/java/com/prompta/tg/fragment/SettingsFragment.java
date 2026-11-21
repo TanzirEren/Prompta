@@ -23,6 +23,7 @@ import androidx.preference.PreferenceManager;
 import com.prompta.tg.R;
 import com.prompta.tg.storage.PromptRepository;
 import com.prompta.tg.sync.SyncManager;
+import com.prompta.tg.telegram.TelegramClient;
 import com.prompta.tg.telegram.TelegramSyncService;
 
 import java.text.SimpleDateFormat;
@@ -248,6 +249,9 @@ public class SettingsFragment extends Fragment {
              .putString("channel_id", channelId)
              .putBoolean("tg_connected", false)
              .apply();
+
+        // Reset Retrofit singleton so new token takes effect
+        TelegramClient.reset();
 
         setSyncStatus("Testing…", 0xFFD4AC0D, false);
 

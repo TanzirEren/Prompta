@@ -4,16 +4,15 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/bg_primary"
-    android:fitsSystemWindows="false">
+    android:background="@color/bg_primary">
 
-    <!-- Fragment Container -->
+    <!-- Fragment Container — full screen, fragments handle their own top insets -->
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/fragment_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
-    <!-- Bottom Navigation Bar with blur background -->
+    <!-- Bottom Navigation Bar -->
     <LinearLayout
         android:id="@+id/bottom_nav_container"
         android:layout_width="match_parent"
@@ -22,22 +21,20 @@
         android:orientation="vertical"
         android:elevation="8dp">
 
-        <!-- Blur/frosted overlay using RenderEffect (API 31+) or fallback -->
         <androidx.cardview.widget.CardView
             android:id="@+id/nav_card"
             android:layout_width="match_parent"
-            android:layout_height="80dp"
-            app:cardCornerRadius="28dp"
+            android:layout_height="wrap_content"
+            app:cardCornerRadius="0dp"
             app:cardElevation="0dp"
-            app:cardBackgroundColor="#F5F5F5F0"
-            android:layout_marginHorizontal="0dp">
+            app:cardBackgroundColor="#F2F1EF">
 
+            <!-- Inner nav row: 68dp tall, plus bottom padding added in Java for nav bar -->
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="68dp"
                 android:orientation="horizontal"
                 android:gravity="center_vertical"
-                android:paddingBottom="8dp"
                 android:paddingTop="4dp">
 
                 <!-- Home Tab -->
