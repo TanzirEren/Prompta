@@ -71,4 +71,14 @@ public class SyncManager {
     public void cancelAll() {
         workManager.cancelAllWorkByTag(SyncWorker.TAG);
     }
+
+    /** Static convenience — Context থেকে সরাসরি call করুন */
+    public static void syncNow(Context ctx) {
+        new SyncManager(ctx).syncNow();
+    }
+
+    /** Static convenience — Context থেকে সরাসরি periodic sync চালু করুন */
+    public static void startPeriodicSync(Context ctx) {
+        new SyncManager(ctx).startPeriodicSync();
+    }
 }
