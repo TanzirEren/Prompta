@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
+import androidx.core.splashscreen.SplashScreen;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -32,10 +33,12 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        // MUST be called BEFORE super.onCreate() — splash screen install
+        SplashScreen.installSplashScreen(this);
+
         super.onCreate(savedInstanceState);
 
-        // Edge-to-edge: fragment content draws behind status bar & nav bar,
-        // but we manually apply insets to each zone.
+        // Edge-to-edge rendering
         WindowCompat.setDecorFitsSystemWindows(getWindow(), false);
 
         setContentView(R.layout.activity_main);
@@ -60,20 +63,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void applyInsets() {
-        // Bottom nav: add system navigation bar height as bottom padding
+        // Bottom nav: pad by system navigation bar height
         View navCard = findViewById(R.id.nav_card);
         ViewCompat.setOnApplyWindowInsetsListener(navCard, (v, windowInsets) -> {
             Insets sys = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars());
-            // Add nav bar height to bottom padding so content sits above nav bar
             v.setPadding(0, 0, 0, sys.bottom);
-            return WindowInsetsCompat.CONSUMED;
-        });
-
-        // Fragment container: dispatch insets to fragments
-        View fragmentContainer = findViewById(R.id.fragment_container);
-        ViewCompat.setOnApplyWindowInsetsListener(fragmentContainer, (v, windowInsets) -> {
-            // Let fragments handle their own insets (status bar top padding)
-            ViewCompat.dispatchApplyWindowInsets(v, windowInsets);
             return WindowInsetsCompat.CONSUMED;
         });
     }

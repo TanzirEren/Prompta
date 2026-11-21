@@ -73,9 +73,6 @@ dependencies {
     // WorkManager (Phase 3 - Background sync)
     implementation 'androidx.work:work-runtime:2.9.0'
 
-    // Startup (WorkManager initialize)
-    implementation 'androidx.startup:startup-runtime:1.1.1'
-
     // Markwon (Phase 2 - Markdown rendering)
     implementation 'io.noties.markwon:core:4.6.2'
     implementation 'io.noties.markwon:editor:4.6.2'
